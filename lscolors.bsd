@@ -1,0 +1,10 @@
+# GENERIERT von build.py aus vendor/palette.json. Nicht direkt bearbeiten.
+# macOS/BSD ls: LSCOLORS besteht aus 11 Paaren (Vordergrund/Hintergrund).
+# Reihenfolge: Verzeichnis, Symlink, Socket, Pipe, Executable,
+# Block-, Zeichengeraet, setuid, setgid, sticky+writable, writable.
+# Kuerzel: a=schwarz b=rot c=gruen d=braun e=blau f=magenta g=cyan
+#          h=hellgrau; Grossbuchstabe=fett; x=Terminal-Default.
+# Achtung: 8 Paare (16 Zeichen) waeren ungueltig; macOS ls(1)
+# dokumentiert 11 Paare. GNU ls nutzt LS_COLORS -> dircolors.gnu.
+export CLICOLOR=1
+export LSCOLORS="ExGxFxdxCxDxDxBxBxExEx"

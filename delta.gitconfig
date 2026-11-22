@@ -1,0 +1,80 @@
+# GENERIERT von build.py aus vendor/palette.json. Nicht direkt bearbeiten.
+# Einbinden mit:  [include] path = /pfad/zu/delta.gitconfig
+#
+# Bewusst ANSI-Farbnamen statt Hex: delta akzeptiert seit neueren
+# Versionen "#rrggbb", ANSI-Namen funktionieren aber auch in aelteren
+# Versionen und ohne Truecolor. Hex-Werte stehen im README.
+# Rollen: blau = Datei/Pfad, petrol/gruen = plus, rot = minus,
+#         gold/gelb = Hunk und Commit, cyan = Zeilennummern.
+# Zwei Features: "42vibes" (dunkel, Default) und "42vibes-light".
+
+[core]
+	pager = delta
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true
+	line-numbers = true
+	side-by-side = true
+	syntax-theme = 42vibes
+	features = 42vibes
+	hyperlinks = true
+
+[delta "42vibes"]
+	# Datei-Kopf
+	file-style = "bold blue"
+	file-decoration-style = "blue ul"
+	# Hunk-Kopf
+	hunk-header-style = "bold yellow"
+	hunk-header-decoration-style = "yellow box"
+	# Zeilennummern
+	line-numbers-left-style = "cyan"
+	line-numbers-right-style = "cyan"
+	line-numbers-minus-style = "red"
+	line-numbers-plus-style = "green"
+	line-numbers-zero-style = "brightblack"
+	# Entfernte Zeilen (minus)
+	minus-style = "red"
+	minus-emph-style = "bold red"
+	minus-empty-line-marker-style = "red"
+	# Hinzugefuegte Zeilen (plus)
+	plus-style = "green"
+	plus-emph-style = "bold green"
+	plus-empty-line-marker-style = "green"
+	# Commit und Metadaten
+	commit-style = "bold yellow"
+	commit-decoration-style = "yellow box"
+	whitespace-error-style = "magenta reverse"
+
+[delta "42vibes-light"]
+	# Gleiche ANSI-Rollen wie dunkel: die konkreten Light-Farben
+	# kommen aus den ANSI-Slots 0-15 des hellen Terminal-Profils.
+	# Kein Hex, damit aeltere delta-Versionen und Terminals ohne
+	# Truecolor mitmachen (Grenze siehe README).
+	light = true
+	# Datei-Kopf
+	file-style = "bold blue"
+	file-decoration-style = "blue ul"
+	# Hunk-Kopf
+	hunk-header-style = "bold yellow"
+	hunk-header-decoration-style = "yellow box"
+	# Zeilennummern
+	line-numbers-left-style = "cyan"
+	line-numbers-right-style = "cyan"
+	line-numbers-minus-style = "red"
+	line-numbers-plus-style = "green"
+	line-numbers-zero-style = "brightblack"
+	# Entfernte Zeilen (minus)
+	minus-style = "red"
+	minus-emph-style = "bold red"
+	minus-empty-line-marker-style = "red"
+	# Hinzugefuegte Zeilen (plus)
+	plus-style = "green"
+	plus-emph-style = "bold green"
+	plus-empty-line-marker-style = "green"
+	# Commit und Metadaten
+	commit-style = "bold yellow"
+	commit-decoration-style = "yellow box"
+	whitespace-error-style = "magenta reverse"

@@ -1,0 +1,243 @@
+# GENERIERT von build.py aus vendor/palette.json. Nicht direkt bearbeiten.
+# Absichtlich keine Nerd-Font-Glyphen; siehe README ("Symbole").
+"$schema" = "https://starship.rs/config-schema.json"
+palette = "42vibes"
+# Heller Hintergrund? Dann die naechste Zeile aktivieren:
+# palette = "42vibes_light"
+add_newline = true
+
+format = """
+$status[╭─](muted) $username$hostname$directory$git_branch$git_status
+([│](muted) $python$nodejs$deno$bun$rust$golang$java$kotlin$ruby$php$elixir$haskell$lua$perl$swift$zig$dotnet$terraform$kubernetes$docker_context$aws$package$git_state$cmd_duration$jobs$shell$time)
+[╰─](muted)$character
+"""
+
+[palettes.42vibes]
+bg = "#050f18"
+bg_deep = "#030913"
+surface = "#12263a"
+surface_high = "#1c3c56"
+surface_max = "#264f6b"
+text = "#f8fafc"
+muted = "#bfcdd9"
+faint = "#93a7b8"
+accent = "#2fb59d"
+interactive = "#55a7c8"
+warm = "#e7b45a"
+border = "#3a5f78"
+success = "#2fb59d"
+warning = "#e7b45a"
+error = "#dd7a85"
+info = "#4fc3c9"
+ansi_black = "#0b1621"
+ansi_red = "#dd7a85"
+ansi_green = "#2fb59d"
+ansi_yellow = "#e7b45a"
+ansi_blue = "#55a7c8"
+ansi_magenta = "#9d8fd8"
+ansi_cyan = "#4fc3c9"
+ansi_white = "#bfcdd9"
+ansi_bright_black = "#6b7d8e"
+ansi_bright_red = "#f0a0a9"
+ansi_bright_green = "#60d6c1"
+ansi_bright_yellow = "#f1d4a1"
+ansi_bright_blue = "#93c7dc"
+ansi_bright_magenta = "#cbbff0"
+ansi_bright_cyan = "#7fdde1"
+ansi_bright_white = "#f8fafc"
+
+[palettes.42vibes_light]
+bg = "#f7fafc"
+bg_deep = "#e6eef5"
+surface = "#e6eef5"
+surface_high = "#d5e2ee"
+surface_max = "#c3d5e4"
+text = "#08141f"
+muted = "#3f5262"
+faint = "#5a6f80"
+accent = "#177a69"
+interactive = "#2f7191"
+warm = "#a9761f"
+border = "#a8bfd1"
+success = "#177a69"
+warning = "#a9761f"
+error = "#b04a58"
+info = "#237c82"
+ansi_black = "#08141f"
+ansi_red = "#b04a58"
+ansi_green = "#177a69"
+ansi_yellow = "#a9761f"
+ansi_blue = "#2f7191"
+ansi_magenta = "#6a5aa8"
+ansi_cyan = "#237c82"
+ansi_white = "#d7e2ec"
+ansi_bright_black = "#5a6f80"
+ansi_bright_red = "#d06774"
+ansi_bright_green = "#2c9c86"
+ansi_bright_yellow = "#c28f2e"
+ansi_bright_blue = "#3f8cad"
+ansi_bright_magenta = "#8574c2"
+ansi_bright_cyan = "#2f969c"
+ansi_bright_white = "#f7fafc"
+
+[character]
+format = "$symbol "
+success_symbol = "[❯](bold accent)"
+error_symbol = "[❯](bold error)"
+vimcmd_symbol = "[❮](bold interactive)"
+vimcmd_replace_one_symbol = "[❮](bold warm)"
+vimcmd_replace_symbol = "[❮](bold warm)"
+vimcmd_visual_symbol = "[❮](bold info)"
+
+[status]
+disabled = false
+style = "bold error"
+symbol = "✖"
+# Leerer success_symbol: status erscheint nur bei Exit != 0.
+success_symbol = ""
+format = "[$symbol $status]($style) "
+
+[username]
+show_always = false
+style_user = "muted"
+style_root = "bold error"
+format = "[$user]($style) "
+
+[hostname]
+ssh_only = true
+style = "muted"
+format = "[@$hostname]($style) "
+
+[directory]
+style = "bold interactive"
+read_only = " ro"
+read_only_style = "muted"
+truncation_length = 4
+truncation_symbol = "…/"
+format = "[$path]($style)[$read_only]($read_only_style) "
+
+[git_branch]
+symbol = ""
+style = "bold accent"
+format = "[$branch]($style) "
+
+[git_status]
+style = "error"
+format = "([$all_status$ahead_behind]($style)) "
+
+[git_state]
+style = "warm"
+format = "[$state]($style) "
+
+[cmd_duration]
+min_time = 500
+style = "bold warm"
+format = "[$duration]($style) "
+
+[jobs]
+symbol = "+"
+style = "muted"
+format = "[$symbol$number]($style) "
+
+[shell]
+style = "faint"
+format = "[$indicator]($style) "
+bash_indicator = "sh"
+zsh_indicator = "zsh"
+fish_indicator = "fish"
+powershell_indicator = "ps"
+
+[time]
+disabled = false
+time_format = "%H:%M"
+style = "muted"
+format = "[$time]($style)"
+
+# Sprachen und Tools: Versionen in Petrol, Blau oder Gold.
+[python]
+style = "accent"
+format = "[py $version]($style) "
+
+[nodejs]
+style = "interactive"
+format = "[node $version]($style) "
+
+[deno]
+style = "interactive"
+format = "[deno $version]($style) "
+
+[bun]
+style = "warm"
+format = "[bun $version]($style) "
+
+[rust]
+style = "warm"
+format = "[rs $version]($style) "
+
+[golang]
+style = "accent"
+format = "[go $version]($style) "
+
+[java]
+style = "interactive"
+format = "[java $version]($style) "
+
+[kotlin]
+style = "warm"
+format = "[kt $version]($style) "
+
+[ruby]
+style = "warm"
+format = "[rb $version]($style) "
+
+[php]
+style = "interactive"
+format = "[php $version]($style) "
+
+[elixir]
+style = "accent"
+format = "[ex $version]($style) "
+
+[haskell]
+style = "warm"
+format = "[hs $version]($style) "
+
+[lua]
+style = "interactive"
+format = "[lua $version]($style) "
+
+[perl]
+style = "warm"
+format = "[pl $version]($style) "
+
+[swift]
+style = "warm"
+format = "[swift $version]($style) "
+
+[zig]
+style = "accent"
+format = "[zig $version]($style) "
+
+[dotnet]
+style = "interactive"
+format = "[.net $version]($style) "
+
+[terraform]
+style = "accent"
+format = "[tf $version]($style) "
+
+[kubernetes]
+style = "interactive"
+format = "[k8s $context]($style) "
+
+[docker_context]
+style = "interactive"
+format = "[docker $context]($style) "
+
+[aws]
+style = "warm"
+format = "[aws $profile]($style) "
+
+[package]
+style = "faint"
+format = "[$version]($style) "
