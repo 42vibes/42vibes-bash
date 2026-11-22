@@ -166,7 +166,7 @@ def build_starship() -> str:
         "command_timeout = 1000",
         "scan_timeout = 30",
         "add_newline = false",
-        'format = "[╭─](muted) $time($username$hostname )$directory$git_branch$git_status$git_state$kubernetes$aws$terraform$cmd_duration$jobs$status$line_break[╰─](muted)$character"',
+        'format = "[╭─](muted) $time($username$hostname )$directory$git_branch$git_status$git_state$kubernetes$aws$terraform$cmd_duration$jobs$line_break[╰─](muted)$status$character"',
         "",
     ]
 
@@ -194,7 +194,7 @@ def build_starship() -> str:
             symbol = "✖"
             # Leerer success_symbol: status erscheint nur bei Exit != 0.
             success_symbol = ""
-            format = "[$symbol $status]($style) "
+            format = " [$symbol $status]($style) "
 
             [username]
             show_always = false
@@ -1045,7 +1045,8 @@ Prompt style (two lines instead of three):
   gold (`aws <profile>`); `git_state`, `cmd_duration` and `jobs` stay
   contextual.
 - The clock sits directly after the frame and before the username; the exit
-  code closes the context line, using the 24-hour format (see below).
+  code appears on the input line, before the prompt character, using the
+  24-hour format (see below).
 - Truncation: `truncation_symbol = "…/"` is plain text, not a format string,
   and inherits the directory style; the current directory name stays bold.
 - `$line_break` starts the second line, `╰─` and the character close it.
@@ -1066,10 +1067,11 @@ it disabled), and Starship's default time format is 24-hour `%R` (`14:05`).
 
 `status` stays in the global format and is deliberately silent on success:
 `success_symbol = ""`, so exit code 0 adds nothing (no `0` noise). On a
-non-zero exit code both the symbol and the numeric code are shown at the end of
-the context line, for example `✖ 127`; the character also switches to the red
-error symbol. The module
-format is `[$symbol $status]($style) `, which is what makes the code visible.
+non-zero exit code both the symbol and the numeric code are shown on the input
+line, before the prompt character, for example `╰─ ✖ 127 ❯`; the character also
+switches to the red error symbol. The module
+format is `" [$symbol $status]($style) "`, with spaces on both sides that only
+render while the module is active.
 
 ### Kubernetes detection
 
@@ -1409,7 +1411,8 @@ Prompt-Stil (zwei Zeilen statt drei):
   `aws` in Gold (`aws <Profil>`); `git_state`, `cmd_duration` und `jobs`
   bleiben kontextuell.
 - Die Uhrzeit steht direkt hinter dem Rahmen und vor dem Benutzernamen; der
-  Returncode schließt die Kontextzeile ab, im 24-Stunden-Format (siehe unten).
+  Returncode erscheint in der Eingabezeile vor dem Prompt-Zeichen, im
+  24-Stunden-Format (siehe unten).
 - Kürzung: `truncation_symbol = "…/"` ist reiner Text, kein Format-String,
   und erbt den Verzeichnis-Stil; der aktuelle Ordnername bleibt fett.
 - `$line_break` beginnt die zweite Zeile, `╰─` und das Character-Symbol
@@ -1432,11 +1435,11 @@ Starship liefert es deaktiviert aus), und Starship nutzt standardmäßig das
 
 `status` bleibt im globalen Format und schweigt im Erfolgsfall bewusst:
 `success_symbol = ""`, damit Exit-Code 0 nichts hinzufügt (kein `0`-Rauschen).
-Bei Exit-Code != 0 erscheinen Symbol **und** numerischer Code am Ende der
-Kontextzeile, zum Beispiel `✖ 127`; zusätzlich wechselt das Character-Symbol
-auf das rote Fehlerzeichen.
-Das Modulformat ist `[$symbol $status]($style) ` – dadurch wird der Code
-sichtbar.
+Bei Exit-Code != 0 erscheinen Symbol **und** numerischer Code in der
+Eingabezeile vor dem Prompt-Zeichen, zum Beispiel `╰─ ✖ 127 ❯`; zusätzlich
+wechselt das Character-Symbol auf das rote Fehlerzeichen.
+Das Modulformat ist `" [$symbol $status]($style) "` – die Leerzeichen links und
+rechts erscheinen nur, solange das Modul aktiv ist.
 
 ### Kubernetes-Erkennung
 

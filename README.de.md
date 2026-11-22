@@ -118,7 +118,8 @@ Prompt-Stil (zwei Zeilen statt drei):
   `aws` in Gold (`aws <Profil>`); `git_state`, `cmd_duration` und `jobs`
   bleiben kontextuell.
 - Die Uhrzeit steht direkt hinter dem Rahmen und vor dem Benutzernamen; der
-  Returncode schließt die Kontextzeile ab, im 24-Stunden-Format (siehe unten).
+  Returncode erscheint in der Eingabezeile vor dem Prompt-Zeichen, im
+  24-Stunden-Format (siehe unten).
 - Kürzung: `truncation_symbol = "…/"` ist reiner Text, kein Format-String,
   und erbt den Verzeichnis-Stil; der aktuelle Ordnername bleibt fett.
 - `$line_break` beginnt die zweite Zeile, `╰─` und das Character-Symbol
@@ -141,11 +142,11 @@ Starship liefert es deaktiviert aus), und Starship nutzt standardmäßig das
 
 `status` bleibt im globalen Format und schweigt im Erfolgsfall bewusst:
 `success_symbol = ""`, damit Exit-Code 0 nichts hinzufügt (kein `0`-Rauschen).
-Bei Exit-Code != 0 erscheinen Symbol **und** numerischer Code am Ende der
-Kontextzeile, zum Beispiel `✖ 127`; zusätzlich wechselt das Character-Symbol
-auf das rote Fehlerzeichen.
-Das Modulformat ist `[$symbol $status]($style) ` – dadurch wird der Code
-sichtbar.
+Bei Exit-Code != 0 erscheinen Symbol **und** numerischer Code in der
+Eingabezeile vor dem Prompt-Zeichen, zum Beispiel `╰─ ✖ 127 ❯`; zusätzlich
+wechselt das Character-Symbol auf das rote Fehlerzeichen.
+Das Modulformat ist `" [$symbol $status]($style) "` – die Leerzeichen links und
+rechts erscheinen nur, solange das Modul aktiv ist.
 
 ### Kubernetes-Erkennung
 

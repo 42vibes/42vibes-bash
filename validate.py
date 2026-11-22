@@ -253,6 +253,8 @@ def validate_starship() -> None:
         fail(f"starship.toml: globales format lässt Module weg: {', '.join(missing)}")
     if not prompt_format.startswith("[╭─](muted) $time"):
         fail("starship.toml: format muss mit dem Rahmen und dann $time beginnen")
+    if "$line_break" not in prompt_format or prompt_format.find("$status") < prompt_format.find("$line_break"):
+        fail("starship.toml: $status muss in der zweiten Zeile (nach $line_break) stehen")
     forbidden_modules = (
         "python", "nodejs", "deno", "bun", "rust", "golang", "java", "kotlin",
         "ruby", "php", "elixir", "haskell", "lua", "perl", "swift", "zig",

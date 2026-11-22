@@ -7,7 +7,7 @@ palette = "42vibes"
 command_timeout = 1000
 scan_timeout = 30
 add_newline = false
-format = "[╭─](muted) $time($username$hostname )$directory$git_branch$git_status$git_state$kubernetes$aws$terraform$cmd_duration$jobs$status$line_break[╰─](muted)$character"
+format = "[╭─](muted) $time($username$hostname )$directory$git_branch$git_status$git_state$kubernetes$aws$terraform$cmd_duration$jobs$line_break[╰─](muted)$status$character"
 
 [palettes.42vibes]
 bg = "#050f18"
@@ -92,7 +92,7 @@ style = "bold error"
 symbol = "✖"
 # Leerer success_symbol: status erscheint nur bei Exit != 0.
 success_symbol = ""
-format = "[$symbol $status]($style) "
+format = " [$symbol $status]($style) "
 
 [username]
 show_always = false
