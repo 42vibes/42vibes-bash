@@ -124,6 +124,10 @@ README_REQUIREMENTS = {
             "Nerd Font",
             "command_timeout",
             "line_break",
+            "Time",
+            "exit code",
+            "KUBECONFIG",
+            "detect",
         ],
     },
     "README.de.md": {
@@ -142,6 +146,10 @@ README_REQUIREMENTS = {
             "Nerd-Font",
             "command_timeout",
             "line_break",
+            "Uhrzeit",
+            "Returncode",
+            "KUBECONFIG",
+            "detect",
         ],
     },
 }
@@ -238,7 +246,7 @@ def validate_starship() -> None:
     required_modules = (
         "$status", "$username", "$hostname", "$directory", "$git_branch",
         "$git_status", "$git_state", "$kubernetes", "$aws", "$terraform",
-        "$cmd_duration", "$jobs", "$character", "$line_break",
+        "$cmd_duration", "$jobs", "$time", "$character", "$line_break",
     )
     missing = [module for module in required_modules if module not in prompt_format]
     if missing:
@@ -246,7 +254,7 @@ def validate_starship() -> None:
     forbidden_modules = (
         "python", "nodejs", "deno", "bun", "rust", "golang", "java", "kotlin",
         "ruby", "php", "elixir", "haskell", "lua", "perl", "swift", "zig",
-        "dotnet", "package", "shell", "time", "docker_context",
+        "dotnet", "package", "shell", "docker_context",
     )
     format_tokens = set(re.findall(r"\$([A-Za-z_][A-Za-z0-9_]*)", prompt_format))
     format_forbidden = sorted(format_tokens & set(forbidden_modules))
@@ -290,6 +298,29 @@ def validate_starship() -> None:
         fail("starship.toml: status muss disabled = false sein")
     if status.get("success_symbol") != "":
         fail("starship.toml: status.success_symbol muss leer sein (nur Fehler zeigen)")
+    status_format = status.get("format")
+    if not isinstance(status_format, str) or not all(
+        token in status_format for token in ("$symbol", "$status")
+    ):
+        fail("starship.toml: status.format muss $symbol und $status enthalten")
+    time = data.get("time")
+    if not isinstance(time, dict):
+        fail("starship.toml: [time] fehlt")
+    if time.get("style") != "muted":
+        fail("starship.toml: time.style muss 'muted' sein")
+    if time.get("disabled") is not False:
+        fail("starship.toml: time muss disabled = false sein")
+    if time.get("format") != "[$time]($style) ":
+        fail("starship.toml: time.format muss '[$time]($style) ' sein")
+    kubernetes = data.get("kubernetes")
+    if not isinstance(kubernetes, dict):
+        fail("starship.toml: [kubernetes] fehlt")
+    if kubernetes.get("disabled") is not False:
+        fail("starship.toml: kubernetes muss disabled = false sein")
+    for key in ("detect_files", "detect_folders", "detect_env_vars"):
+        values = kubernetes.get(key)
+        if not isinstance(values, list) or not values:
+            fail(f"starship.toml: kubernetes.{key} muss eine nicht-leere Liste sein")
     ok(f"starship.toml (tomllib, Palette {active!r}, {len(palettes[active])} Farben)")
 
 

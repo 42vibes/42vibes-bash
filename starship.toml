@@ -7,7 +7,7 @@ palette = "42vibes"
 command_timeout = 1000
 scan_timeout = 30
 add_newline = false
-format = "$status[╭─](muted) ($username$hostname )$directory$git_branch$git_status$git_state$kubernetes$aws$terraform$cmd_duration$jobs$line_break[╰─](muted)$character"
+format = "$status[╭─](muted) ($username$hostname )$directory$git_branch$git_status$git_state$kubernetes$aws$terraform$cmd_duration$jobs$time$line_break[╰─](muted)$character"
 
 [palettes.42vibes]
 bg = "#050f18"
@@ -135,6 +135,10 @@ format = "[$state]($style) "
 disabled = false
 style = "interactive"
 format = "[k8s $context(/$namespace)]($style) "
+# Nur zeigen, wenn wirklich mit k8s gearbeitet wird (ODER-Verknuepfung).
+detect_files = ["kustomization.yaml", "kustomization.yml", "Chart.yaml", "kind-config.yaml", "kind.yaml", "k8s.yaml"]
+detect_folders = ["k8s", "kubernetes", "manifests", "helm", ".kube"]
+detect_env_vars = ["KUBECONFIG"]
 
 [aws]
 style = "warm"
@@ -153,3 +157,8 @@ format = "[$duration]($style) "
 symbol = "+"
 style = "muted"
 format = "[$symbol$number]($style) "
+
+[time]
+disabled = false
+style = "muted"
+format = "[$time]($style) "

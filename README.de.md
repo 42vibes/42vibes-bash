@@ -113,15 +113,53 @@ Prompt-Stil (zwei Zeilen statt drei):
   zeigt nur geänderte und konfliktbehaftete Einträge (`untracked`, `ahead`,
   `behind` und `diverged` sind leer, `ignore_submodules = true`).
 - Kontexte statt Versionen: `kubernetes` in Blau (`k8s <Kontext>/<Namespace>`),
-  `terraform` in Petrol (`tf <Workspace>`), `aws` in Gold (`aws <Profil>`);
-  `git_state`, `cmd_duration` und `jobs` bleiben kontextuell.
+  aber nur, wenn das aktuelle Verzeichnis oder die Umgebung tatsächlich auf
+  Kubernetes zeigt (siehe unten); `terraform` in Petrol (`tf <Workspace>`),
+  `aws` in Gold (`aws <Profil>`); `git_state`, `cmd_duration` und `jobs`
+  bleiben kontextuell.
+- Die Uhrzeit steht in der zweiten Zeile: `time` in gedämpftem Grau, direkt vor
+  `$line_break`, im 24-Stunden-Format (siehe unten).
 - Kürzung: `truncation_symbol = "…/"` ist reiner Text, kein Format-String,
   und erbt den Verzeichnis-Stil; der aktuelle Ordnername bleibt fett.
 - `$line_break` beginnt die zweite Zeile, `╰─` und das Character-Symbol
   schließen sie ab. Sprachversionen (`python`, `nodejs`, `deno`, `bun`,
   `rust`, `golang`, `java`, `kotlin`, `ruby`, `php`, `elixir`, `haskell`,
-  `lua`, `perl`, `swift`, `zig`, `dotnet`), `package`, `shell`, `time` und
+  `lua`, `perl`, `swift`, `zig`, `dotnet`), `package`, `shell` und
   `docker_context` sind bewusst entfernt, damit der Prompt kurz bleibt.
+
+### Uhrzeit
+
+Der Prompt bleibt zweizeilig. `$time` steht am Ende der Kontextzeile, direkt
+vor `$line_break`. Die `[time]`-Tabelle nutzt `style = "muted"` und
+`format = "[$time]($style) "`, die Uhrzeit erscheint also im selben gedämpften
+Grau wie der Rahmen. Das Modul ist explizit aktiviert (`disabled = false`;
+Starship liefert es deaktiviert aus), und Starship nutzt standardmäßig das
+24-Stunden-Format `%R` (`14:05`).
+
+### Returncode
+
+`status` bleibt im globalen Format und schweigt im Erfolgsfall bewusst:
+`success_symbol = ""`, damit Exit-Code 0 nichts hinzufügt (kein `0`-Rauschen).
+Bei Exit-Code != 0 erscheinen Symbol **und** numerischer Code, zum Beispiel
+`✖ 127`; zusätzlich wechselt das Character-Symbol auf das rote Fehlerzeichen.
+Das Modulformat ist `[$symbol $status]($style) ` – dadurch wird der Code
+sichtbar.
+
+### Kubernetes-Erkennung
+
+`kubernetes` erscheint nur, wenn tatsächlich mit Kubernetes gearbeitet wird.
+Starship verknüpft die Erkennungsbedingungen mit ODER: eine Datei aus
+`detect_files` (`kustomization.yaml`, `kustomization.yml`, `Chart.yaml`,
+`kind-config.yaml`, `kind.yaml`, `k8s.yaml`), ein Ordner aus `detect_folders`
+(`k8s`, `kubernetes`, `manifests`, `helm`, `.kube`) oder die
+Umgebungsvariable `KUBECONFIG`. Passt eine Bedingung und ist eine Kubeconfig
+lesbar, zeigt das Modul `k8s <Kontext>/<Namespace>`.
+
+Ohne `KUBECONFIG` und ohne `~/.kube/config` rendert das Modul nichts, selbst
+wenn ein Marker passt. Existiert eine Kubeconfig, hat der aktuelle Ordner aber
+keine Kubernetes-Marker und ist `KUBECONFIG` nicht gesetzt, bleibt das Modul
+ebenfalls unsichtbar. `disabled = false` hält das Modul verfügbar; allein die
+Erkennung entscheidet über die Sichtbarkeit.
 
 Performance: `command_timeout = 1000` (1 s pro externem Befehl) verhindert,
 dass ein langsamer Befehl den Prompt lange blockiert; `scan_timeout = 30` (ms)

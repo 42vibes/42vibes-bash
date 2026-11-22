@@ -112,15 +112,50 @@ Prompt style (two lines instead of three):
   only shows changed and conflicted entries (`untracked`, `ahead`, `behind`
   and `diverged` are empty, `ignore_submodules = true`).
 - Contexts instead of versions: `kubernetes` in blue (`k8s <context>/<namespace>`),
-  `terraform` in petrol (`tf <workspace>`), `aws` in gold (`aws <profile>`);
-  `git_state`, `cmd_duration` and `jobs` stay contextual.
+  but only when the current directory or environment actually points at
+  Kubernetes (see below); `terraform` in petrol (`tf <workspace>`), `aws` in
+  gold (`aws <profile>`); `git_state`, `cmd_duration` and `jobs` stay
+  contextual.
+- The clock is part of the second line: `time` in muted grey, just before
+  `$line_break`, using the 24-hour format (see below).
 - Truncation: `truncation_symbol = "…/"` is plain text, not a format string,
   and inherits the directory style; the current directory name stays bold.
 - `$line_break` starts the second line, `╰─` and the character close it.
   Language version modules (`python`, `nodejs`, `deno`, `bun`, `rust`,
   `golang`, `java`, `kotlin`, `ruby`, `php`, `elixir`, `haskell`, `lua`,
-  `perl`, `swift`, `zig`, `dotnet`), `package`, `shell`, `time` and
+  `perl`, `swift`, `zig`, `dotnet`), `package`, `shell` and
   `docker_context` are deliberately removed to keep the prompt short.
+
+### Time
+
+The prompt keeps two lines. `$time` sits at the end of the context line,
+directly before `$line_break`. The `[time]` table uses `style = "muted"` and
+`format = "[$time]($style) "`, so the clock appears in the same muted grey as
+the frame. The module is enabled explicitly (`disabled = false`; Starship ships
+it disabled), and Starship's default time format is 24-hour `%R` (`14:05`).
+
+### Exit code semantics
+
+`status` stays in the global format and is deliberately silent on success:
+`success_symbol = ""`, so exit code 0 adds nothing (no `0` noise). On a
+non-zero exit code both the symbol and the numeric code are shown, for example
+`✖ 127`; the character also switches to the red error symbol. The module
+format is `[$symbol $status]($style) `, which is what makes the code visible.
+
+### Kubernetes detection
+
+`kubernetes` shows up only when you actually work with Kubernetes. Starship
+ORs the detection conditions: a file from `detect_files` (`kustomization.yaml`,
+`kustomization.yml`, `Chart.yaml`, `kind-config.yaml`, `kind.yaml`, `k8s.yaml`),
+a folder from `detect_folders` (`k8s`, `kubernetes`, `manifests`, `helm`,
+`.kube`) or the `KUBECONFIG` environment variable. When a condition matches and
+a kubeconfig is readable, the module shows `k8s <context>/<namespace>`.
+
+Without `KUBECONFIG` and without `~/.kube/config`, the module renders nothing,
+even if a marker matches. If a kubeconfig exists but the current folder has no
+Kubernetes marker and `KUBECONFIG` is not set, the module also stays hidden.
+`disabled = false` keeps the module available; detection alone decides whether
+it is visible.
 
 Performance: `command_timeout = 1000` (1 s per external command) keeps a slow
 command from blocking the prompt for long, `scan_timeout = 30` (ms) limits the
