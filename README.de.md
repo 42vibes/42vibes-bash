@@ -100,23 +100,36 @@ export STARSHIP_CONFIG="$PWD/starship.toml"
 # oder: cp starship.toml ~/.config/starship.toml
 ```
 
-Prompt-Stil:
+Prompt-Stil (zwei Zeilen statt drei):
 
 - Status **fett/rot**, nur bei Exit-Code != 0 (`status`, leerer
-  `success_symbol`); das Character-Symbol wechselt auf das rote Fehlerzeichen.
+  `success_symbol`); die erste Zeile beginnt mit `╭─`, das Character-Symbol
+  wechselt auf das rote Fehlerzeichen.
 - User/Host **gedämpft** und nur wenn relevant (`username.show_always =
-  false`, `hostname.ssh_only = true`).
+  false`, `hostname.ssh_only = true`). Beide Formate enden ohne Leerzeichen;
+  die Gruppe `($username$hostname )` liefert das Trennleerzeichen.
 - Verzeichnis **fett** in Blau (`directory` → `bold interactive`).
-- Git-Branch **fett** in Petrol (`git_branch` → `bold accent`).
+- Git-Branch **fett** in Petrol (`git_branch` → `bold accent`); `git_status`
+  zeigt nur geänderte und konfliktbehaftete Einträge (`untracked`, `ahead`,
+  `behind` und `diverged` sind leer, `ignore_submodules = true`).
+- Kontexte statt Versionen: `kubernetes` in Blau (`k8s <Kontext>/<Namespace>`),
+  `terraform` in Petrol (`tf <Workspace>`), `aws` in Gold (`aws <Profil>`);
+  `git_state`, `cmd_duration` und `jobs` bleiben kontextuell.
 - Kürzung: `truncation_symbol = "…/"` ist reiner Text, kein Format-String,
   und erbt den Verzeichnis-Stil; der aktuelle Ordnername bleibt fett.
-- Sprach- und Tool-Versionen in Petrol, Blau oder Gold (`python`, `nodejs`,
-  `rust`, `golang`, …) in der zweiten Prompt-Zeile; dort stehen auch
-  kontextuelle Module wie `git_state`, `cmd_duration`, `jobs`, `package`,
-  `kubernetes`, `docker_context`, `aws`, `shell` und `time`.
+- `$line_break` beginnt die zweite Zeile, `╰─` und das Character-Symbol
+  schließen sie ab. Sprachversionen (`python`, `nodejs`, `deno`, `bun`,
+  `rust`, `golang`, `java`, `kotlin`, `ruby`, `php`, `elixir`, `haskell`,
+  `lua`, `perl`, `swift`, `zig`, `dotnet`), `package`, `shell`, `time` und
+  `docker_context` sind bewusst entfernt, damit der Prompt kurz bleibt.
+
+Performance: `command_timeout = 1000` (1 s pro externem Befehl) verhindert,
+dass ein langsamer Befehl den Prompt lange blockiert; `scan_timeout = 30` (ms)
+begrenzt den Verzeichnis-Scan. In sehr großen Repositories `git_status` bei
+Bedarf deaktivieren (`[git_status] disabled = true`).
 
 **Keine Nerd-Font-Pflicht:** Das Profil nutzt nur normale Unicode-Zeichen
-(`❯`, `╭`, `╰`, `…`) und Textlabels wie `py`, `node`, `rs`. Wer Nerd-Font-
+(`❯`, `╭`, `╰`, `…`) und Textlabels wie `k8s`, `tf`, `aws`. Wer Nerd-Font-
 Symbole möchte, kann die `format`-Zeilen der Module selbst ergänzen.
 
 ## Dateifarben: GNU ls vs. macOS ls
@@ -291,8 +304,8 @@ Hex-Werten selbst; `palette.sh` liefert nur Farbwerte.
 | Verzeichnis (fett) | `interactive` #55a7c8 | `directory` → `bold interactive` | – |
 | Git-Branch (fett) | `accent` #2fb59d | `git_branch` → `bold accent` | – |
 | Fehler (fett/rot) | `error` #dd7a85 | `character`/`status` → `bold error` | `invalid` |
-| User/Host (gedämpft) | `muted` #bfcdd9 | `username`/`hostname`/`time` → `muted` | – |
-| Sprache/Tool | petrol/blue/gold | `accent`/`interactive`/`warm` | – |
+| User/Host (gedämpft) | `muted` #bfcdd9 | `username`/`hostname` → `muted` | – |
+| Kontext (k8s/tf/aws) | petrol/blue/gold | `kubernetes`/`terraform`/`aws` | – |
 | Kommentar | `gray.400` #b3bfca | – | `comment` (italic) |
 | Keyword | `purple.300` #bbb1e4 | – | `keyword`, `storage` |
 | String | `green.300` #44ceb5 | – | `string` |

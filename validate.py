@@ -122,6 +122,8 @@ README_REQUIREMENTS = {
             "LSCOLORS",
             "delta",
             "Nerd Font",
+            "command_timeout",
+            "line_break",
         ],
     },
     "README.de.md": {
@@ -138,6 +140,8 @@ README_REQUIREMENTS = {
             "LSCOLORS",
             "delta",
             "Nerd-Font",
+            "command_timeout",
+            "line_break",
         ],
     },
 }
@@ -232,13 +236,52 @@ def validate_starship() -> None:
     if not isinstance(prompt_format, str):
         fail("starship.toml: globales format fehlt")
     required_modules = (
-        "$status", "$character", "$username", "$hostname", "$directory",
-        "$git_branch", "$git_status", "$python", "$nodejs", "$rust",
-        "$golang", "$terraform",
+        "$status", "$username", "$hostname", "$directory", "$git_branch",
+        "$git_status", "$git_state", "$kubernetes", "$aws", "$terraform",
+        "$cmd_duration", "$jobs", "$character", "$line_break",
     )
     missing = [module for module in required_modules if module not in prompt_format]
     if missing:
         fail(f"starship.toml: globales format lässt Module weg: {', '.join(missing)}")
+    forbidden_modules = (
+        "python", "nodejs", "deno", "bun", "rust", "golang", "java", "kotlin",
+        "ruby", "php", "elixir", "haskell", "lua", "perl", "swift", "zig",
+        "dotnet", "package", "shell", "time", "docker_context",
+    )
+    format_tokens = set(re.findall(r"\$([A-Za-z_][A-Za-z0-9_]*)", prompt_format))
+    format_forbidden = sorted(format_tokens & set(forbidden_modules))
+    if format_forbidden:
+        fail(
+            "starship.toml: globales format enthält entfernte Module: "
+            + ", ".join(format_forbidden)
+        )
+    configured_forbidden = sorted(set(data) & set(forbidden_modules))
+    if configured_forbidden:
+        fail(
+            "starship.toml: entfernte Modul-Tabellen vorhanden: "
+            + ", ".join(configured_forbidden)
+        )
+    if data.get("command_timeout") != 1000:
+        fail("starship.toml: command_timeout muss 1000 sein")
+    if data.get("scan_timeout") != 30:
+        fail("starship.toml: scan_timeout muss 30 sein")
+    if data.get("add_newline") is not False:
+        fail("starship.toml: add_newline muss false sein")
+    for module, expected in (
+        ("username", "[$user]($style)"),
+        ("hostname", "[@$hostname]($style)"),
+    ):
+        spec = data.get(module)
+        if not isinstance(spec, dict) or spec.get("format") != expected:
+            fail(f"starship.toml: {module}.format muss {expected!r} sein")
+    git_status = data.get("git_status")
+    if not isinstance(git_status, dict):
+        fail("starship.toml: [git_status] fehlt")
+    for key in ("untracked", "ahead", "behind", "diverged"):
+        if git_status.get(key) != "":
+            fail(f"starship.toml: git_status.{key} muss leer sein")
+    if git_status.get("ignore_submodules") is not True:
+        fail("starship.toml: git_status.ignore_submodules muss true sein")
     directory = data.get("directory")
     if not isinstance(directory, dict) or directory.get("truncation_symbol") != "…/":
         fail("starship.toml: directory.truncation_symbol muss reines '…/' sein")
