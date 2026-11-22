@@ -7,7 +7,7 @@ palette = "42vibes"
 command_timeout = 1000
 scan_timeout = 30
 add_newline = false
-format = "$status[╭─](muted) ($username$hostname )$directory$git_branch$git_status$git_state$kubernetes$aws$terraform$cmd_duration$jobs$time$line_break[╰─](muted)$character"
+format = "[╭─](muted) $time($username$hostname )$directory$git_branch$git_status$git_state$kubernetes$aws$terraform$cmd_duration$jobs$status$line_break[╰─](muted)$character"
 
 [palettes.42vibes]
 bg = "#050f18"

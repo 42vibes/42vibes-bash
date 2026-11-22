@@ -116,8 +116,8 @@ Prompt style (two lines instead of three):
   Kubernetes (see below); `terraform` in petrol (`tf <workspace>`), `aws` in
   gold (`aws <profile>`); `git_state`, `cmd_duration` and `jobs` stay
   contextual.
-- The clock is part of the second line: `time` in muted grey, just before
-  `$line_break`, using the 24-hour format (see below).
+- The clock sits directly after the frame and before the username; the exit
+  code closes the context line, using the 24-hour format (see below).
 - Truncation: `truncation_symbol = "…/"` is plain text, not a format string,
   and inherits the directory style; the current directory name stays bold.
 - `$line_break` starts the second line, `╰─` and the character close it.
@@ -128,8 +128,8 @@ Prompt style (two lines instead of three):
 
 ### Time
 
-The prompt keeps two lines. `$time` sits at the end of the context line,
-directly before `$line_break`. The `[time]` table uses `style = "muted"` and
+The prompt keeps two lines. `$time` sits directly after the frame and before
+the username, so `╭─` and `╰─` both stay in column one. The `[time]` table uses `style = "muted"` and
 `format = "[$time]($style) "`, so the clock appears in the same muted grey as
 the frame. The module is enabled explicitly (`disabled = false`; Starship ships
 it disabled), and Starship's default time format is 24-hour `%R` (`14:05`).
@@ -138,8 +138,9 @@ it disabled), and Starship's default time format is 24-hour `%R` (`14:05`).
 
 `status` stays in the global format and is deliberately silent on success:
 `success_symbol = ""`, so exit code 0 adds nothing (no `0` noise). On a
-non-zero exit code both the symbol and the numeric code are shown, for example
-`✖ 127`; the character also switches to the red error symbol. The module
+non-zero exit code both the symbol and the numeric code are shown at the end of
+the context line, for example `✖ 127`; the character also switches to the red
+error symbol. The module
 format is `[$symbol $status]($style) `, which is what makes the code visible.
 
 ### Kubernetes detection

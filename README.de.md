@@ -117,8 +117,8 @@ Prompt-Stil (zwei Zeilen statt drei):
   Kubernetes zeigt (siehe unten); `terraform` in Petrol (`tf <Workspace>`),
   `aws` in Gold (`aws <Profil>`); `git_state`, `cmd_duration` und `jobs`
   bleiben kontextuell.
-- Die Uhrzeit steht in der zweiten Zeile: `time` in gedämpftem Grau, direkt vor
-  `$line_break`, im 24-Stunden-Format (siehe unten).
+- Die Uhrzeit steht direkt hinter dem Rahmen und vor dem Benutzernamen; der
+  Returncode schließt die Kontextzeile ab, im 24-Stunden-Format (siehe unten).
 - Kürzung: `truncation_symbol = "…/"` ist reiner Text, kein Format-String,
   und erbt den Verzeichnis-Stil; der aktuelle Ordnername bleibt fett.
 - `$line_break` beginnt die zweite Zeile, `╰─` und das Character-Symbol
@@ -129,8 +129,9 @@ Prompt-Stil (zwei Zeilen statt drei):
 
 ### Uhrzeit
 
-Der Prompt bleibt zweizeilig. `$time` steht am Ende der Kontextzeile, direkt
-vor `$line_break`. Die `[time]`-Tabelle nutzt `style = "muted"` und
+Der Prompt bleibt zweizeilig. `$time` steht direkt hinter dem Rahmen und vor dem
+Benutzernamen, damit `╭─` und `╰─` beide in Spalte eins bleiben. Die
+`[time]`-Tabelle nutzt `style = "muted"` und
 `format = "[$time]($style) "`, die Uhrzeit erscheint also im selben gedämpften
 Grau wie der Rahmen. Das Modul ist explizit aktiviert (`disabled = false`;
 Starship liefert es deaktiviert aus), und Starship nutzt standardmäßig das
@@ -140,8 +141,9 @@ Starship liefert es deaktiviert aus), und Starship nutzt standardmäßig das
 
 `status` bleibt im globalen Format und schweigt im Erfolgsfall bewusst:
 `success_symbol = ""`, damit Exit-Code 0 nichts hinzufügt (kein `0`-Rauschen).
-Bei Exit-Code != 0 erscheinen Symbol **und** numerischer Code, zum Beispiel
-`✖ 127`; zusätzlich wechselt das Character-Symbol auf das rote Fehlerzeichen.
+Bei Exit-Code != 0 erscheinen Symbol **und** numerischer Code am Ende der
+Kontextzeile, zum Beispiel `✖ 127`; zusätzlich wechselt das Character-Symbol
+auf das rote Fehlerzeichen.
 Das Modulformat ist `[$symbol $status]($style) ` – dadurch wird der Code
 sichtbar.
 

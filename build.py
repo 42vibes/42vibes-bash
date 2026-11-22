@@ -166,7 +166,7 @@ def build_starship() -> str:
         "command_timeout = 1000",
         "scan_timeout = 30",
         "add_newline = false",
-        'format = "$status[╭─](muted) ($username$hostname )$directory$git_branch$git_status$git_state$kubernetes$aws$terraform$cmd_duration$jobs$time$line_break[╰─](muted)$character"',
+        'format = "[╭─](muted) $time($username$hostname )$directory$git_branch$git_status$git_state$kubernetes$aws$terraform$cmd_duration$jobs$status$line_break[╰─](muted)$character"',
         "",
     ]
 
@@ -1044,8 +1044,8 @@ Prompt style (two lines instead of three):
   Kubernetes (see below); `terraform` in petrol (`tf <workspace>`), `aws` in
   gold (`aws <profile>`); `git_state`, `cmd_duration` and `jobs` stay
   contextual.
-- The clock is part of the second line: `time` in muted grey, just before
-  `$line_break`, using the 24-hour format (see below).
+- The clock sits directly after the frame and before the username; the exit
+  code closes the context line, using the 24-hour format (see below).
 - Truncation: `truncation_symbol = "…/"` is plain text, not a format string,
   and inherits the directory style; the current directory name stays bold.
 - `$line_break` starts the second line, `╰─` and the character close it.
@@ -1056,8 +1056,8 @@ Prompt style (two lines instead of three):
 
 ### Time
 
-The prompt keeps two lines. `$time` sits at the end of the context line,
-directly before `$line_break`. The `[time]` table uses `style = "muted"` and
+The prompt keeps two lines. `$time` sits directly after the frame and before
+the username, so `╭─` and `╰─` both stay in column one. The `[time]` table uses `style = "muted"` and
 `format = "[$time]($style) "`, so the clock appears in the same muted grey as
 the frame. The module is enabled explicitly (`disabled = false`; Starship ships
 it disabled), and Starship's default time format is 24-hour `%R` (`14:05`).
@@ -1066,8 +1066,9 @@ it disabled), and Starship's default time format is 24-hour `%R` (`14:05`).
 
 `status` stays in the global format and is deliberately silent on success:
 `success_symbol = ""`, so exit code 0 adds nothing (no `0` noise). On a
-non-zero exit code both the symbol and the numeric code are shown, for example
-`✖ 127`; the character also switches to the red error symbol. The module
+non-zero exit code both the symbol and the numeric code are shown at the end of
+the context line, for example `✖ 127`; the character also switches to the red
+error symbol. The module
 format is `[$symbol $status]($style) `, which is what makes the code visible.
 
 ### Kubernetes detection
@@ -1407,8 +1408,8 @@ Prompt-Stil (zwei Zeilen statt drei):
   Kubernetes zeigt (siehe unten); `terraform` in Petrol (`tf <Workspace>`),
   `aws` in Gold (`aws <Profil>`); `git_state`, `cmd_duration` und `jobs`
   bleiben kontextuell.
-- Die Uhrzeit steht in der zweiten Zeile: `time` in gedämpftem Grau, direkt vor
-  `$line_break`, im 24-Stunden-Format (siehe unten).
+- Die Uhrzeit steht direkt hinter dem Rahmen und vor dem Benutzernamen; der
+  Returncode schließt die Kontextzeile ab, im 24-Stunden-Format (siehe unten).
 - Kürzung: `truncation_symbol = "…/"` ist reiner Text, kein Format-String,
   und erbt den Verzeichnis-Stil; der aktuelle Ordnername bleibt fett.
 - `$line_break` beginnt die zweite Zeile, `╰─` und das Character-Symbol
@@ -1419,8 +1420,9 @@ Prompt-Stil (zwei Zeilen statt drei):
 
 ### Uhrzeit
 
-Der Prompt bleibt zweizeilig. `$time` steht am Ende der Kontextzeile, direkt
-vor `$line_break`. Die `[time]`-Tabelle nutzt `style = "muted"` und
+Der Prompt bleibt zweizeilig. `$time` steht direkt hinter dem Rahmen und vor dem
+Benutzernamen, damit `╭─` und `╰─` beide in Spalte eins bleiben. Die
+`[time]`-Tabelle nutzt `style = "muted"` und
 `format = "[$time]($style) "`, die Uhrzeit erscheint also im selben gedämpften
 Grau wie der Rahmen. Das Modul ist explizit aktiviert (`disabled = false`;
 Starship liefert es deaktiviert aus), und Starship nutzt standardmäßig das
@@ -1430,8 +1432,9 @@ Starship liefert es deaktiviert aus), und Starship nutzt standardmäßig das
 
 `status` bleibt im globalen Format und schweigt im Erfolgsfall bewusst:
 `success_symbol = ""`, damit Exit-Code 0 nichts hinzufügt (kein `0`-Rauschen).
-Bei Exit-Code != 0 erscheinen Symbol **und** numerischer Code, zum Beispiel
-`✖ 127`; zusätzlich wechselt das Character-Symbol auf das rote Fehlerzeichen.
+Bei Exit-Code != 0 erscheinen Symbol **und** numerischer Code am Ende der
+Kontextzeile, zum Beispiel `✖ 127`; zusätzlich wechselt das Character-Symbol
+auf das rote Fehlerzeichen.
 Das Modulformat ist `[$symbol $status]($style) ` – dadurch wird der Code
 sichtbar.
 
